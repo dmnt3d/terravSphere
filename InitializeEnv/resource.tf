@@ -1,4 +1,5 @@
 # create Virtual Machine
+# REF: https://www.hashicorp.com/blog/a-re-introduction-to-the-terraform-vsphere-provider
 
 provider "vsphere" {
     user = "administrator@vsphere.local"
@@ -43,6 +44,7 @@ resource "vsphere_folder" "vSphere-Terra" {
 resource "vsphere_virtual_machine" "terraform-machine"
 {
     name = "terraformMachine"
+    #name             = "${var.name_prefix}${format("%02d", count.index + var.name_starting_val)}"
     folder = "${vsphere_folder.vSphere-Terra.path}"
     resource_pool_id = "${data.vsphere_compute_cluster.cluster.resource_pool_id}"
     datastore_id     = "${data.vsphere_datastore.datastore.id}"
@@ -68,7 +70,7 @@ resource "vsphere_virtual_machine" "terraform-machine"
     clone {
         template_uuid = "${data.vsphere_virtual_machine.template.id}"
         timeout = "60"
-        
+
         customize {
             linux_options {
                 host_name = "terraform-test"
