@@ -9,5 +9,3 @@ variable "ipv4" {
 }
 variable subnet {}
 variable gateway {}
-
-
