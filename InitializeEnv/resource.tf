@@ -1,15 +1,17 @@
 # create Virtual Machine
 # REF: https://www.hashicorp.com/blog/a-re-introduction-to-the-terraform-vsphere-provider
 
+# execute by
+# terraform plan -var-file=Swarm/swarm.tfvars -state=Swarm/swarm.tfstate
+
+# start define variable
+
 provider "vsphere" {
     user = "administrator@vsphere.local"
     password = "VMware1!"
     vsphere_server = "vcdr01.ldc.int"  
     allow_unverified_ssl = true
 }
-
-# start define variable
-
 data "vsphere_datacenter" "dc" {
   name = "DR-Sky"
 }
@@ -34,22 +36,23 @@ data "vsphere_virtual_machine" "template" {
 }
 # end define variable
 
-resource "vsphere_folder" "vSphere-Terra" {
+resource "vsphere_folder" "vSphere-Folder" {
     type = "vm"
-    path = "vSphere-Terra"  
+    path = "${var.folder}"  
     datacenter_id = "${data.vsphere_datacenter.dc.id}"
 }
 
 # create VM within the folder
 resource "vsphere_virtual_machine" "terraform-machine"
 {
-    name = "terraformMachine"
-    #name             = "${var.name_prefix}${format("%02d", count.index + var.name_starting_val)}"
-    folder = "${vsphere_folder.vSphere-Terra.path}"
+    #name = "terraformMachine"
+    count = "${var.count}"
+    name   = "${var.prefix}${format("%02d", count.index + var.start_val)}"
+    folder = "${vsphere_folder.vSphere-Folder.path}"
     resource_pool_id = "${data.vsphere_compute_cluster.cluster.resource_pool_id}"
     datastore_id     = "${data.vsphere_datastore.datastore.id}"
-    num_cpus = 2
-    memory = 4096
+    num_cpus = "${var.CPU}"
+    memory = "${var.mem}"
     
     guest_id = "${data.vsphere_virtual_machine.template.guest_id}"
     scsi_type = "${data.vsphere_virtual_machine.template.scsi_type}"
@@ -73,16 +76,16 @@ resource "vsphere_virtual_machine" "terraform-machine"
 
         customize {
             linux_options {
-                host_name = "terraform-test"
+                host_name = "${var.prefix}${format("%02d", count.index + var.start_val)}"
                 domain    = "test.internal"
             }
 
             network_interface {
-                ipv4_address = "172.16.0.171"
-                ipv4_netmask = "24"
+                ipv4_address = "${lookup(var.ipv4, count.index)}"
+                ipv4_netmask = "${var.subnet}"
             }
 
-            ipv4_gateway = "172.16.0.1"
+            ipv4_gateway = "${var.gateway}"
         }
     }
 
