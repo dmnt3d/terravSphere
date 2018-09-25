@@ -77,11 +77,12 @@ resource "vsphere_virtual_machine" "terraform-machine"
         customize {
             linux_options {
                 host_name = "${var.prefix}${format("%02d", count.index + var.start_val)}"
-                domain    = "test.internal"
+                domain    = "${var.prefix}.internal"
             }
 
             network_interface {
-                ipv4_address = "${lookup(var.ipv4, count.index)}"
+                #ipv4_address = "${lookup(var.ipv4, count.index)}"
+                ipv4_address = "${var.ipv4}${count.index+var.start_val}"
                 ipv4_netmask = "${var.subnet}"
             }
 

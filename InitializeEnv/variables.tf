@@ -5,7 +5,7 @@ variable "CPU" {}
 variable "mem" {}
 variable "start_val" {}
 variable "ipv4" {
-    type = "map"
+    #type = "map"
 }
 variable subnet {}
 variable gateway {}
