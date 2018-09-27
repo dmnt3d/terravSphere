@@ -1,4 +1,4 @@
-count  = 2
+count  = 3
 prefix = "SWARM"
 folder = "SWARM-VMs"
 CPU = 2
