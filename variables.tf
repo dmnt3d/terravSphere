@@ -9,7 +9,7 @@ variable subnet {}
 variable gateway {}
 variable vCenter {}
 variable userName {}
-variable Password {}
+variable password {}
 variable datacenter {}
 variable datastore {}
 variable cluster {}
