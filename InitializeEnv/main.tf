@@ -2,36 +2,36 @@
 # REF: https://www.hashicorp.com/blog/a-re-introduction-to-the-terraform-vsphere-provider
 
 # execute by
-# terraform plan -var-file=Swarm/swarm.tfvars -state=Swarm/swarm.tfstate
+# terraform plan -var-file=Swarm/swarm.tfvars -var-file=DR.tfvars -state=Swarm/swarm.tfstate
 
 # start define variable
 
 provider "vsphere" {
-    user = "administrator@vsphere.local"
-    password = "VMware1!"
-    vsphere_server = "vcdr01.ldc.int"  
+    user = "${var.userName}"
+    password = "${var.password}"
+    vsphere_server = "${var.vCenter}"
     allow_unverified_ssl = true
 }
 data "vsphere_datacenter" "dc" {
-  name = "DR-Sky"
+  name = "${var.datacenter}"
 }
 data "vsphere_datastore" "datastore" {
-  name          = "LSI-SSD00.local"
+  name          = "${var.datastore}"
   datacenter_id = "${data.vsphere_datacenter.dc.id}"
 }
 
 data "vsphere_compute_cluster" "cluster" {
-  name          = "DR-Main"
+  name          = "${var.cluster}"
   datacenter_id = "${data.vsphere_datacenter.dc.id}"
 }
 
 data "vsphere_network" "network" {
-  name          = "V1720"
+  name          = "${var.network}"
   datacenter_id = "${data.vsphere_datacenter.dc.id}"
 }
 
 data "vsphere_virtual_machine" "template" {
-  name          = "CentOS7-DR"
+  name          = "${var.template}"
   datacenter_id = "${data.vsphere_datacenter.dc.id}"
 }
 # end define variable

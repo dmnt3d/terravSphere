@@ -4,8 +4,14 @@ variable "folder" {}
 variable "CPU" {}
 variable "mem" {}
 variable "start_val" {}
-variable "ipv4" {
-    #type = "map"
-}
+variable "ipv4" {}
 variable subnet {}
 variable gateway {}
+variable vCenter {}
+variable userName {}
+variable Password {}
+variable datacenter {}
+variable datastore {}
+variable cluster {}
+variable network {}
+variable template {}
