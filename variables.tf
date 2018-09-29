@@ -7,6 +7,8 @@ variable "start_val" {}
 variable "ipv4" {}
 variable subnet {}
 variable gateway {}
+variable domain {}
+variable dns_servers {}
 variable vCenter {}
 variable userName {}
 variable password {}

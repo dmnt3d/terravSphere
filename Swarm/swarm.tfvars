@@ -9,3 +9,5 @@ start_val = 1
 ipv4 = "172.16.0.17"
 subnet = "24"
 gateway = "172.16.0.1"
+domain = "ldc.int"
+dns_servers = "172.16.0.100"

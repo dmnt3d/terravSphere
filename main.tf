@@ -87,6 +87,8 @@ resource "vsphere_virtual_machine" "terraform-machine"
             }
 
             ipv4_gateway = "${var.gateway}"
+            dns_suffix_list = ["${var.domain}"]
+            dns_server_list = ["${var.dns_servers}"]
         }
     }
 
