@@ -5,7 +5,7 @@ for SWARM:
 terraform plan -var-file=Swarm/swarm.tfvars -var-file=DR.tfvars -state=Swarm/swarm.tfstate
 
 for K8S:
-terraform plan -var-file=K8S/swarm.tfvars -var-file=DR.tfvars -state=K8S/k8s.tfstate
+terraform plan -var-file=K8S/k8s.tfvars -var-file=DR.tfvars -state=K8S/k8s.tfstate
 
 
 DR.tfvars = contains taget vCenter variable
