@@ -1,7 +1,10 @@
 # prep-target hosts for kubeadm
 # install depdendency
+# test: ansible -i inventory --private-key=/home/master/.ssh/id_rsa -u root -m ping all
+# execute 
+# ansible-playbook -i inventory --private-key=/home/master/.ssh/id_rsa prep-for-kubeadm.yml
 ---
-- hosts: nosetup
+- hosts: all
   remote_user: root
   #vars:
 

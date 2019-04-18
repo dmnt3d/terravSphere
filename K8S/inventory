@@ -1,0 +1,3 @@
+172.16.0.171 server_name=node01.ldc.int server=node01
+172.16.0.172 server_name=node02.ldc.int server=node02
+172.16.0.173 server_name=node03.ldc.int server=node03
