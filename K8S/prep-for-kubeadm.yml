@@ -1,0 +1,94 @@
+# prep-target hosts for kubeadm
+# install depdendency
+---
+- hosts: nosetup
+  remote_user: root
+  #vars:
+
+  tasks:
+    - name: "Set Hostname" 
+      hostname:
+        #name: masterdr.ldc.int
+        name: "{{ server_name }}"
+
+# START host specific settings
+    - name: Remove SWAP
+      command: swapoff -a
+      async: 0
+      poll: 0
+      ignore_errors: true
+
+    - name: Disable Firewall
+      command: systemctl disable firewalld
+      async: 0
+      poll: 0
+      ignore_errors: true
+
+    - name: Stop Firewall
+      command: systemctl disable firewalld
+      async: 0
+      poll: 0
+      ignore_errors: true
+
+
+    - name: Remove unused interface
+      command: nmcli connection delete id eno16780032
+      async: 0
+      poll: 0
+      ignore_errors: true
+      
+    - name: Disable SELINUX
+      selinux:
+        state: disabled
+
+# install needed packages
+
+    - name: upgrade all packages
+      yum:
+        name: '*'
+        state: latest
+
+    - name: Install need packages
+      yum: 
+        name: 
+          - nfs-utils
+          - yum-utils
+          - device-mapper-persistent-data
+          - lvm2
+        state: installed
+      
+# start docker specifics
+    - name: Add Docker repo
+      get_url:
+        url: https://download.docker.com/linux/centos/docker-ce.repo
+        dest: /etc/yum.repos.d/docer-ce.repo
+      become: yes
+
+    - name: Enable Docker Edge repo
+      ini_file:
+        dest: /etc/yum.repos.d/docer-ce.repo
+        section: 'docker-ce-edge'
+        option: enabled
+        value: 0
+      become: yes
+
+    - name: Install Docker
+      package:
+        name: docker-ce
+        state: latest
+      become: yes
+
+    - name: Start Docker service
+      service:
+        name: docker
+        state: started
+        enabled: yes
+      become: yes
+
+# end docker specifics
+
+    - name: Restart server
+      command: /sbin/shutdown -r +1
+      async: 0
+      poll: 0
+      ignore_errors: true

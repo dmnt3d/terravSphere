@@ -1,4 +1,4 @@
-count  = 2
+count  = 3
 prefix = "k8s"
 folder = "K8S-VMs"
 CPU = 2
